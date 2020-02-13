@@ -19,7 +19,7 @@ function App() {
           <Route
             exact
             path="/mobile"
-            component={() => <h1>Mobile Development.</h1>}
+            component={() => <h1>Mobile Development</h1>}
           />
 
           <Route
