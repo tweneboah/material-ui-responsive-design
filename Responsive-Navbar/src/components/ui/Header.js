@@ -8,9 +8,14 @@ import {
   Button,
   Menu,
   MenuItem,
-  useMediaQuery
+  useMediaQuery,
+  SwipeableDrawer,
+  IconButton
 } from "@material-ui/core";
 import { makeStyles, useTheme } from "@material-ui/styles";
+
+import MenuIcon from "@material-ui/icons/Menu";
+
 import { Link } from "react-router-dom";
 //custom imports
 import logo from "../../assets/logo.svg";
@@ -66,6 +71,18 @@ const useStyles = makeStyles((theme) => ({
       background: "red",
       opacity: 1
     }
+  },
+  drawerIconContainer: {
+    "&:hover": {
+      backgroundColor: "transparent"
+    },
+    marginLeft: "auto",
+    marginRight: "20px",
+    color: "inherit"
+  },
+  drawerIcon: {
+    height: "50px",
+    width: "50px"
   }
 }));
 
@@ -90,18 +107,20 @@ const Header = () => {
   //Create an instance of our theme for responsive design
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("md"));
-  console.log(theme);
+  //DRAWER
+  //check if we are on ios
+  const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
+
   // Menu hook
   const [anchorEl, setAnchorEl] = useState(null); //position of the menu
-  const [open, setOpen] = useState(false); //Determine the visibility of the menu
+  const [openMenu, setOpenMenu] = useState(false); //Determine the visibility of the menu
 
   //hooks for the tab
   const [value, setValue] = useState(0);
-
+  const [openDrawer, setOpenDrawer] = useState(false);
   //Onchange handler
-  const handleChange = (event, value) => {
-    console.log(value);
-    setValue(value);
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
   };
 
   // HandleClick for the menu
@@ -111,12 +130,12 @@ const Header = () => {
     console.log(event);
     // The event reprevent either click or hover and this determine where we click whether on a button or div and we can get it position event.currentTarget
     setAnchorEl(event.currentTarget); //The element was click
-    setOpen(true);
+    setOpenMenu(true);
   };
 
   const handleClose = (e) => {
     setAnchorEl(null); //Don't set any position
-    setOpen(false);
+    setOpenMenu(false);
   };
 
   //Check the current url and assign active tab to it when we refresh the page
@@ -141,8 +160,8 @@ const Header = () => {
         className={classes.tabContainer}>
         <Tab className={classes.tab} component={Link} to="/" label="Home" />
         <Tab
-          arial-owns={anchorEl ? "simple-menu" : undefined}
-          aria-haspopup={anchorEl ? "true" : undefined}
+          arial-owns={anchorEl ? "simple-menu" : undefined} //arial-owns represent the menu it will render so it will check if there is menu by using the id
+          aria-haspopup={anchorEl ? "true" : undefined} //Pop up the menu
           onMouseOver={(event) => handleClick(event)}
           className={classes.tab}
           component={Link}
@@ -175,7 +194,7 @@ const Header = () => {
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}
-        open={open}
+        open={openMenu}
         onClose={handleClose}
         classes={{ paper: classes.menu }}
         MenuListProps={{ onMouseLeave: handleClose }}
@@ -223,6 +242,30 @@ const Header = () => {
       </Menu>
     </React.Fragment>
   );
+
+  //====================
+  //DRAWER
+  //=====================
+
+  const drawer = (
+    <React.Fragment>
+      <SwipeableDrawer
+        disableBackdropTransition={!iOS}
+        disableDiscovery={iOS}
+        open={openDrawer}
+        onClose={() => setOpenDrawer(false)}
+        onOpen={() => setOpenDrawer(true)}></SwipeableDrawer>
+
+      <IconButton className={classes.drawerIconContainer}>
+        <MenuIcon
+          className={classes.drawerIcon}
+          onClick={() => setOpenDrawer(!openDrawer)}
+          disableRipple
+        />
+      </IconButton>
+    </React.Fragment>
+  );
+
   return (
     <React.Fragment>
       <ElevationScroll>
@@ -236,7 +279,7 @@ const Header = () => {
               onClick={() => setValue(0)}>
               <img className={classes.logo} src={logo} alt="logo" />
             </Button>
-            {matches ? undefined : tabs}
+            {matches ? drawer : tabs}
             {/* The matches values is from 0-1279px * so within that we will render undefined*/}
           </Toolbar>
         </AppBar>
