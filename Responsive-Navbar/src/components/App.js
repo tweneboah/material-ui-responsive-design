@@ -1,7 +1,7 @@
 import React from "react";
 import { ThemeProvider } from "@material-ui/styles";
-import Header from "./ui/Header";
-import theme from "./ui/Theme";
+import Header from "./Navbar/Header";
+import theme from "../theme/Theme";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 function App() {
