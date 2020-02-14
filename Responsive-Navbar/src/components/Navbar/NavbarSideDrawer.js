@@ -1,7 +1,14 @@
 import React, { useState } from "react";
-import { SwipeableDrawer, IconButton } from "@material-ui/core";
+import {
+  SwipeableDrawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import MenuIcon from "@material-ui/icons/Menu";
+import { Link } from "react-router-dom";
 
 //INLINE STYLES
 const useStyles = makeStyles((theme) => ({
@@ -16,6 +23,16 @@ const useStyles = makeStyles((theme) => ({
   drawerIcon: {
     height: "50px",
     width: "50px"
+  },
+  drawer: {
+    backgroundColor: theme.palette.common.blue
+  },
+  drawerItem: {
+    color: "white"
+  },
+  drawerButton: {
+    background: "red",
+    padding: "10px"
   }
 }));
 
@@ -35,7 +52,95 @@ const NavbarSideDrawer = () => {
         disableDiscovery={iOS}
         open={openDrawer}
         onClose={() => setOpenDrawer(false)}
-        onOpen={() => setOpenDrawer(true)}></SwipeableDrawer>
+        onOpen={() => setOpenDrawer(true)}
+        classes={{ paper: classes.drawer }}>
+        <List disablePadding>
+          <ListItem
+            onClick={() => setOpenDrawer(false)}
+            divider
+            button
+            component={Link}
+            to="/">
+            <ListItemText className={classes.drawerItem} disableTypography>
+              Home
+            </ListItemText>
+          </ListItem>
+
+          <ListItem
+            onClick={() => setOpenDrawer(false)}
+            divider
+            button
+            component={Link}
+            to="/customsoftware">
+            <ListItemText className={classes.drawerItem} disableTypography>
+              Custome Software
+            </ListItemText>
+          </ListItem>
+
+          <ListItem
+            onClick={() => setOpenDrawer(false)}
+            divider
+            button
+            component={Link}
+            to="/mobile">
+            <ListItemText className={classes.drawerItem} disableTypography>
+              Mobile
+            </ListItemText>
+          </ListItem>
+
+          <ListItem
+            onClick={() => setOpenDrawer(false)}
+            divider
+            button
+            component={Link}
+            to="/website">
+            <ListItemText className={classes.drawerItem} disableTypography>
+              Website
+            </ListItemText>
+          </ListItem>
+
+          <ListItem
+            onClick={() => setOpenDrawer(false)}
+            divider
+            button
+            component={Link}
+            to="/revolution">
+            <ListItemText className={classes.drawerItem} disableTypography>
+              Revolution
+            </ListItemText>
+          </ListItem>
+          <ListItem
+            onClick={() => setOpenDrawer(false)}
+            divider
+            button
+            component={Link}
+            to="/about">
+            <ListItemText className={classes.drawerItem} disableTypography>
+              About
+            </ListItemText>
+          </ListItem>
+          <ListItem
+            onClick={() => setOpenDrawer(false)}
+            divider
+            button
+            component={Link}
+            to="/contact">
+            <ListItemText className={classes.drawerItem} disableTypography>
+              Contact
+            </ListItemText>
+          </ListItem>
+
+          <ListItem
+            onClick={() => setOpenDrawer(false)}
+            divider
+            button
+            className={[classes.drawerItem, classes.drawerButton]}
+            component={Link}
+            to="/contact">
+            <ListItemText>Free Estimate</ListItemText>
+          </ListItem>
+        </List>
+      </SwipeableDrawer>
 
       <IconButton className={classes.drawerIconContainer}>
         <MenuIcon
